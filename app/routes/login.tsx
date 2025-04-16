@@ -50,13 +50,14 @@ export default function page() {
 			});
 			if (!response.ok) throw new Error("Unauthorized");
 			const result = await response.json();
+			console.log({ result });
 			if (!result.success) {
 				setError(result.message);
 				return;
 			}
 			const token = result.data.token;
-			Cookies.set("token", token, { expires: TOKEN_EXPIRED, secure: true, sameSite: "Strict" });
-			navigate("/dashboard");
+			// Cookies.set("token", token, { expires: TOKEN_EXPIRED, secure: true, sameSite: "Strict" });
+			// navigate("/dashboard");
 			setError("");
 		} catch (err: any) {
 			setError(err.message);
