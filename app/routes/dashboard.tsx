@@ -105,8 +105,8 @@ export default function Page() {
 				setListDataSensor({ KELEMBAPAN_TANAH: dataKelembapan ?? [], SUHU_UDARA: dataSuhu ?? [] });
 			} catch (error) {
 				console.error("Error fetching data:", error);
-				Cookies.remove("token");
-				navigate("/login");
+				// Cookies.remove("token");
+				// navigate("/login");
 			} finally {
 				setIsLoading(false);
 			}
