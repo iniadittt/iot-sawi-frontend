@@ -183,7 +183,7 @@ export default function Page() {
 			<div className="xl:w-[1200px] mx-auto mt-4 grid gap-4 px-4 xl:px-0">
 				<div>
 					<h1 className="font-semibold text-2xl ">Dashboard Operator</h1>
-					<p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Non ullam quam omnis ducimus eos in dolorum repellat dolore magnam quae.</p>
+					<p>Pantau dan analisa data sensor internet of things yang ada dilapangan.</p>
 				</div>
 
 				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
