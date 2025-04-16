@@ -77,18 +77,14 @@ export default function Page() {
 	useEffect(() => {
 		const fetchData = async () => {
 			setIsLoading(true);
-			console.log("GET 0");
 			if (typeof window === "undefined") return;
 			const accessToken = Cookies.get("token");
-			console.log({ accessToken });
 			if (!accessToken) {
-				// navigate("/login");
+				navigate("/login");
 				setIsLoading(false);
 				return;
 			}
-			console.log("GET 1");
 			try {
-				console.log("GET 2");
 				const response = await fetch(`${BACKEND_URL}/sensor`, {
 					method: "GET",
 					headers: {
@@ -97,7 +93,6 @@ export default function Page() {
 				});
 				if (!response.ok) return;
 				const result = await response.json();
-				console.log({ result });
 				const data = result.data;
 				const dataKelembapan = data.filter((item: DataSensorType) => item.type === "KELEMBAPAN_TANAH");
 				const dataSuhu = data.filter((item: DataSensorType) => item.type === "SUHU_UDARA");
@@ -105,8 +100,8 @@ export default function Page() {
 				setListDataSensor({ KELEMBAPAN_TANAH: dataKelembapan ?? [], SUHU_UDARA: dataSuhu ?? [] });
 			} catch (error) {
 				console.error("Error fetching data:", error);
-				// Cookies.remove("token");
-				// navigate("/login");
+				Cookies.remove("token");
+				navigate("/login");
 			} finally {
 				setIsLoading(false);
 			}

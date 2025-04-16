@@ -50,7 +50,6 @@ export default function page() {
 			});
 			if (!response.ok) throw new Error("Unauthorized");
 			const result = await response.json();
-			console.log({ result });
 			if (!result.success) {
 				setError(result.message);
 				return;
