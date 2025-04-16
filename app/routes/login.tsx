@@ -56,8 +56,8 @@ export default function page() {
 				return;
 			}
 			const token = result.data.token;
-			// Cookies.set("token", token, { expires: TOKEN_EXPIRED, secure: true, sameSite: "Strict" });
-			// navigate("/dashboard");
+			Cookies.set("token", token, { expires: TOKEN_EXPIRED, secure: true });
+			navigate("/dashboard");
 			setError("");
 		} catch (err: any) {
 			setError(err.message);
