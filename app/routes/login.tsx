@@ -1,7 +1,7 @@
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { BACKEND_URL, TOKEN_EXPIRED } from "constant";
+import { BACKEND_URL, TOKEN_EXPIRED } from "~/constant";
 import type { Route } from "./+types/home";
 import { cn } from "~/lib/utils";
 import { Input } from "~/components/ui/input";

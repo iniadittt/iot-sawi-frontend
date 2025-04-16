@@ -2,7 +2,7 @@ import * as React from "react";
 import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
-import { BACKEND_URL, TOKEN_EXPIRED } from "constant";
+import { BACKEND_URL } from "~/constant";
 import type { Route } from "./+types/home";
 import { io } from "socket.io-client";
 import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
@@ -23,7 +23,9 @@ interface DataSensorType {
 	createdAt: Date;
 }
 
-const socket = io(BACKEND_URL);
+const socket = io(BACKEND_URL, {
+	transports: ["websocket"],
+});
 
 const chartConfigKelembapanTanah = {
 	kelembapanTanah: {
