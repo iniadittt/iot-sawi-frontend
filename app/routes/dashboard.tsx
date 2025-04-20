@@ -180,13 +180,13 @@ export default function Page() {
 				</div>
 			</header>
 
-			<div className="xl:w-[1200px] mx-auto mt-4 grid gap-4 px-4 xl:px-0">
-				<div>
-					<h1 className="font-semibold text-2xl ">Dashboard Operator</h1>
+			<div className="xl:w-[1200px] w-full xl:mx-auto grid gap-4 py-4 xl:px-0">
+				<div className="px-4">
+					<h1 className="font-semibold text-2xl">Dashboard Operator</h1>
 					<p>Pantau dan analisa data sensor internet of things yang ada dilapangan.</p>
 				</div>
 
-				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+				<div className="grid grid-cols-1 lg:grid-cols-2 gap-4 px-4">
 					<Card className="@container/card">
 						<CardHeader className="relative">
 							<CardDescription>Sensor Kelembapan Tanah</CardDescription>
@@ -209,226 +209,233 @@ export default function Page() {
 					</Card>
 				</div>
 
-				<Card className="@container/card">
-					<CardHeader className="relative">
-						<CardTitle>List Data Suhu Kelembapan Tanah</CardTitle>
-						<CardDescription>
-							<span className="@[540px]/card:block">Total 50 data terakhir</span>
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-						<ChartContainer
-							config={chartConfigKelembapanTanah}
-							className="aspect-auto h-[250px] w-full"
-						>
-							<AreaChart data={listDataSensor.KELEMBAPAN_TANAH}>
-								<defs>
-									<linearGradient
-										id="fillDesktop"
-										x1="0"
-										y1="0"
-										x2="0"
-										y2="1"
-									>
-										<stop
-											offset="5%"
-											stopColor="var(--primary)"
-											stopOpacity={1.0}
-										/>
-										<stop
-											offset="95%"
-											stopColor="var(--primary)"
-											stopOpacity={0.1}
-										/>
-									</linearGradient>
-									<linearGradient
-										id="fillMobile"
-										x1="0"
-										y1="0"
-										x2="0"
-										y2="1"
-									>
-										<stop
-											offset="5%"
-											stopColor="var(--primary)"
-											stopOpacity={0.8}
-										/>
-										<stop
-											offset="95%"
-											stopColor="var(--primary)"
-											stopOpacity={0.1}
-										/>
-									</linearGradient>
-								</defs>
-								<CartesianGrid vertical={false} />
-								<XAxis
-									dataKey="createdAt"
-									tickLine={false}
-									axisLine={false}
-									tickMargin={8}
-									minTickGap={32}
-									tickFormatter={(value) => {
-										const date = new Date(value);
-										return date.toLocaleDateString("en-US", {
-											month: "short",
-											day: "numeric",
-										});
-									}}
-								/>
-								<ChartTooltip
-									cursor={false}
-									content={
-										<ChartTooltipContent
-											labelFormatter={(value) => {
-												return new Date(value).toLocaleDateString("en-US", {
-													month: "short",
-													day: "numeric",
-												});
-											}}
-											indicator="dot"
-										/>
-									}
-								/>
-								<Area
-									dataKey="value"
-									type="natural"
-									fill="var(--primary)"
-									stroke="var(--primary)"
-									stackId="a"
-								/>
-							</AreaChart>
-						</ChartContainer>
-					</CardContent>
-				</Card>
+				<div className="px-4">
+					<Card className="@container/card">
+						<CardHeader className="relative">
+							<CardTitle>List Data Suhu Kelembapan Tanah</CardTitle>
+							<CardDescription>
+								<span className="@[540px]/card:block">Total 50 data terakhir</span>
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+							<ChartContainer
+								config={chartConfigKelembapanTanah}
+								className="aspect-auto h-[250px] w-full"
+							>
+								<AreaChart data={listDataSensor.KELEMBAPAN_TANAH}>
+									<defs>
+										<linearGradient
+											id="fillDesktop"
+											x1="0"
+											y1="0"
+											x2="0"
+											y2="1"
+										>
+											<stop
+												offset="5%"
+												stopColor="var(--primary)"
+												stopOpacity={1.0}
+											/>
+											<stop
+												offset="95%"
+												stopColor="var(--primary)"
+												stopOpacity={0.1}
+											/>
+										</linearGradient>
+										<linearGradient
+											id="fillMobile"
+											x1="0"
+											y1="0"
+											x2="0"
+											y2="1"
+										>
+											<stop
+												offset="5%"
+												stopColor="var(--primary)"
+												stopOpacity={0.8}
+											/>
+											<stop
+												offset="95%"
+												stopColor="var(--primary)"
+												stopOpacity={0.1}
+											/>
+										</linearGradient>
+									</defs>
+									<CartesianGrid vertical={false} />
+									<XAxis
+										dataKey="createdAt"
+										tickLine={false}
+										axisLine={false}
+										tickMargin={8}
+										minTickGap={32}
+										tickFormatter={(value) => {
+											const date = new Date(value);
+											return date.toLocaleDateString("en-US", {
+												month: "short",
+												day: "numeric",
+											});
+										}}
+									/>
+									<ChartTooltip
+										cursor={false}
+										content={
+											<ChartTooltipContent
+												labelFormatter={(value) => {
+													return new Date(value).toLocaleDateString("en-US", {
+														month: "short",
+														day: "numeric",
+													});
+												}}
+												indicator="dot"
+											/>
+										}
+									/>
+									<Area
+										dataKey="value"
+										type="natural"
+										fill="var(--primary)"
+										stroke="var(--primary)"
+										stackId="a"
+									/>
+								</AreaChart>
+							</ChartContainer>
+						</CardContent>
+					</Card>
+				</div>
+				<div className="px-4">
+					<Card className="@container/card">
+						<CardHeader className="relative">
+							<CardTitle>List Data Sensor Suhu Udara</CardTitle>
+							<CardDescription>
+								<span className="@[540px]/card:block">Total 50 data terakhir</span>
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+							<ChartContainer
+								config={chartConfigSuhuUdata}
+								className="aspect-auto h-[250px] w-full"
+							>
+								<AreaChart data={listDataSensor.SUHU_UDARA}>
+									<defs>
+										<linearGradient
+											id="fillDesktop"
+											x1="0"
+											y1="0"
+											x2="0"
+											y2="1"
+										>
+											<stop
+												offset="5%"
+												stopColor="var(--primary)"
+												stopOpacity={1.0}
+											/>
+											<stop
+												offset="95%"
+												stopColor="var(--primary)"
+												stopOpacity={0.1}
+											/>
+										</linearGradient>
+										<linearGradient
+											id="fillMobile"
+											x1="0"
+											y1="0"
+											x2="0"
+											y2="1"
+										>
+											<stop
+												offset="5%"
+												stopColor="var(--primary)"
+												stopOpacity={0.8}
+											/>
+											<stop
+												offset="95%"
+												stopColor="var(--primary)"
+												stopOpacity={0.1}
+											/>
+										</linearGradient>
+									</defs>
+									<CartesianGrid vertical={false} />
+									<XAxis
+										dataKey="createdAt"
+										tickLine={false}
+										axisLine={false}
+										tickMargin={8}
+										minTickGap={32}
+										tickFormatter={(value) => {
+											const date = new Date(value);
+											return date.toLocaleDateString("en-US", {
+												month: "short",
+												day: "numeric",
+											});
+										}}
+									/>
+									<ChartTooltip
+										cursor={false}
+										content={
+											<ChartTooltipContent
+												labelFormatter={(value) => {
+													return new Date(value).toLocaleDateString("en-US", {
+														month: "short",
+														day: "numeric",
+													});
+												}}
+												indicator="dot"
+											/>
+										}
+									/>
+									<Area
+										dataKey="value"
+										type="natural"
+										stackId="a"
+									/>
+								</AreaChart>
+							</ChartContainer>
+						</CardContent>
+					</Card>
+				</div>
 
-				<Card className="@container/card">
-					<CardHeader className="relative">
-						<CardTitle>List Data Sensor Suhu Udara</CardTitle>
-						<CardDescription>
-							<span className="@[540px]/card:block">Total 50 data terakhir</span>
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-						<ChartContainer
-							config={chartConfigSuhuUdata}
-							className="aspect-auto h-[250px] w-full"
-						>
-							<AreaChart data={listDataSensor.SUHU_UDARA}>
-								<defs>
-									<linearGradient
-										id="fillDesktop"
-										x1="0"
-										y1="0"
-										x2="0"
-										y2="1"
-									>
-										<stop
-											offset="5%"
-											stopColor="var(--primary)"
-											stopOpacity={1.0}
-										/>
-										<stop
-											offset="95%"
-											stopColor="var(--primary)"
-											stopOpacity={0.1}
-										/>
-									</linearGradient>
-									<linearGradient
-										id="fillMobile"
-										x1="0"
-										y1="0"
-										x2="0"
-										y2="1"
-									>
-										<stop
-											offset="5%"
-											stopColor="var(--primary)"
-											stopOpacity={0.8}
-										/>
-										<stop
-											offset="95%"
-											stopColor="var(--primary)"
-											stopOpacity={0.1}
-										/>
-									</linearGradient>
-								</defs>
-								<CartesianGrid vertical={false} />
-								<XAxis
-									dataKey="createdAt"
-									tickLine={false}
-									axisLine={false}
-									tickMargin={8}
-									minTickGap={32}
-									tickFormatter={(value) => {
-										const date = new Date(value);
-										return date.toLocaleDateString("en-US", {
-											month: "short",
-											day: "numeric",
-										});
-									}}
-								/>
-								<ChartTooltip
-									cursor={false}
-									content={
-										<ChartTooltipContent
-											labelFormatter={(value) => {
-												return new Date(value).toLocaleDateString("en-US", {
-													month: "short",
-													day: "numeric",
-												});
-											}}
-											indicator="dot"
-										/>
-									}
-								/>
-								<Area
-									dataKey="value"
-									type="natural"
-									stackId="a"
-								/>
-							</AreaChart>
-						</ChartContainer>
-					</CardContent>
-				</Card>
-
-				<Card>
-					<CardHeader className="relative">
-						<CardTitle>Tabel Data Sensor</CardTitle>
-						<CardDescription>
-							<span className="@[540px]/card:block">Total 50 data terakhir</span>
-						</CardDescription>
-					</CardHeader>
-					<CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-						<Table className="">
-							<TableHeader>
-								<TableRow>
-									<TableHead className="w-1/3">Sensor</TableHead>
-									<TableHead className="w-1/3">Nilai</TableHead>
-									<TableHead className="w-1/3">Tanggal Pengambilan</TableHead>
-								</TableRow>
-							</TableHeader>
-							<TableBody>
-								{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA]
-									.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
-									.map((item, index) => (
-										<TableRow key={index}>
-											<TableCell className="font-medium">{item.type === "KELEMBAPAN_TANAH" ? "Kelembapan Tanah" : "Suhu Udara"}</TableCell>
-											<TableCell>
-												{item.value} {item.type === "KELEMBAPAN_TANAH" ? "%" : "°C"}
-											</TableCell>
-											<TableCell>{formatTanggal(item.createdAt)}</TableCell>
+				<div className="px-4">
+					<Card>
+						<CardHeader className="relative">
+							<CardTitle>Tabel Data Sensor</CardTitle>
+							<CardDescription>
+								<span className="@[540px]/card:block">Total 50 data terakhir</span>
+							</CardDescription>
+						</CardHeader>
+						<CardContent className="px-2 pt-4">
+							<div className="grid overflow-auto">
+								<Table>
+									<TableHeader>
+										<TableRow>
+											<TableHead className="w-[200px]">Sensor</TableHead>
+											<TableHead className="w-[140px]">Nilai</TableHead>
+											<TableHead className="w-[300px]">Tanggal Pengambilan</TableHead>
 										</TableRow>
-									))}
-							</TableBody>
-							<TableFooter>
-								<TableRow>
-									<TableCell colSpan={2}>Total Data</TableCell>
-									<TableCell className="text-right">{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA].length}</TableCell>
-								</TableRow>
-							</TableFooter>
-						</Table>
-					</CardContent>
-				</Card>
+									</TableHeader>
+									<TableBody>
+										{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA]
+											.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
+											.map((item, index) => (
+												<TableRow key={index}>
+													<TableCell className="font-medium">{item.type === "KELEMBAPAN_TANAH" ? "Kelembapan Tanah" : "Suhu Udara"}</TableCell>
+													<TableCell className="">
+														{item.value} {item.type === "KELEMBAPAN_TANAH" ? "%" : "°C"}
+													</TableCell>
+													<TableCell className="text-wrap">{formatTanggal(item.createdAt)}</TableCell>
+												</TableRow>
+											))}
+									</TableBody>
+									<TableFooter>
+										<TableRow>
+											<TableCell colSpan={2}>Total Data</TableCell>
+											<TableCell className="text-right">{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA].length}</TableCell>
+										</TableRow>
+									</TableFooter>
+								</Table>
+							</div>
+						</CardContent>
+					</Card>
+				</div>
 			</div>
 		</div>
 	);
