@@ -53,25 +53,11 @@ export default function Page() {
 	const [isLoading, setIsLoading] = useState(false);
 	const [error, setError] = useState("");
 	const [data, setData] = useState<{
-		KELEMBAPAN_TANAH: DataSensorType[];
-		SUHU_UDARA: DataSensorType[];
+		kelembapan_tanah: DataSensorType[];
+		suhu_udara: DataSensorType[];
 	}>({
-		KELEMBAPAN_TANAH: [],
-		SUHU_UDARA: [],
-	});
-	const [sensorNow, setSensorNow] = useState<{
-		KELEMBAPAN_TANAH: DataSensorType | null;
-		SUHU_UDARA: DataSensorType | null;
-	}>({
-		KELEMBAPAN_TANAH: null,
-		SUHU_UDARA: null,
-	});
-	const [listDataSensor, setListDataSensor] = useState<{
-		KELEMBAPAN_TANAH: DataSensorType[];
-		SUHU_UDARA: DataSensorType[];
-	}>({
-		KELEMBAPAN_TANAH: [],
-		SUHU_UDARA: [],
+		kelembapan_tanah: [],
+		suhu_udara: [],
 	});
 
 	useEffect(() => {
@@ -93,11 +79,14 @@ export default function Page() {
 				});
 				if (!response.ok) return;
 				const result = await response.json();
-				const data = result.data;
-				const dataKelembapan = data.filter((item: DataSensorType) => item.type === "KELEMBAPAN_TANAH");
-				const dataSuhu = data.filter((item: DataSensorType) => item.type === "SUHU_UDARA");
-				setData({ KELEMBAPAN_TANAH: dataKelembapan ?? [], SUHU_UDARA: dataSuhu ?? [] });
-				setListDataSensor({ KELEMBAPAN_TANAH: dataKelembapan ?? [], SUHU_UDARA: dataSuhu ?? [] });
+				const resultData = result.data;
+				const dataKelembapan = resultData?.length > 1 ? resultData.filter((item: DataSensorType) => item.type === "KELEMBAPAN_TANAH").sort((a: DataSensorType, b: DataSensorType) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) : [];
+				const dataSuhu = resultData?.length > 1 ? resultData.filter((item: DataSensorType) => item.type === "SUHU_UDARA").sort((a: DataSensorType, b: DataSensorType) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()) : [];
+				setData((prev) => ({
+					...prev,
+					kelembapan_tanah: dataKelembapan,
+					suhu_udara: dataSuhu,
+				}));
 			} catch (error) {
 				console.error("Error fetching data:", error);
 				Cookies.remove("token");
@@ -109,29 +98,20 @@ export default function Page() {
 		fetchData();
 
 		if (socket) {
-			socket.on("sensorKelembapan", (data) => {
-				setSensorNow((prev) => ({ ...prev, KELEMBAPAN_TANAH: data }));
-			});
-
-			socket.on("sensorSuhu", (data) => {
-				setSensorNow((prev) => ({ ...prev, SUHU_UDARA: data }));
-			});
-
-			socket.on("listSensorKelembapan", (data) => {
-				setListDataSensor((prev) => ({ ...prev, KELEMBAPAN_TANAH: data }));
-			});
-
-			socket.on("listSensorSuhu", (data) => {
-				setListDataSensor((prev) => ({ ...prev, SUHU_UDARA: data }));
+			socket.on("getDataSensor", (data) => {
+				const dataKelembapan = data.filter((item: DataSensorType) => item.type === "KELEMBAPAN_TANAH").sort((a: DataSensorType, b: DataSensorType) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+				const dataSuhu = data.filter((item: DataSensorType) => item.type === "SUHU_UDARA").sort((a: DataSensorType, b: DataSensorType) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+				setData((prev) => ({
+					...prev,
+					kelembapan_tanah: dataKelembapan,
+					suhu_udara: dataSuhu,
+				}));
 			});
 		}
 
 		return () => {
 			if (socket) {
-				socket.off("sensorKelembapan");
-				socket.off("sensorSuhu");
-				socket.off("listSensorKelembapan");
-				socket.off("listSensorSuhu");
+				socket.off("getDataSensor");
 			}
 		};
 	}, [navigate]);
@@ -190,21 +170,21 @@ export default function Page() {
 					<Card className="@container/card">
 						<CardHeader className="relative">
 							<CardDescription>Sensor Kelembapan Tanah</CardDescription>
-							<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">{sensorNow?.KELEMBAPAN_TANAH?.value ?? data?.KELEMBAPAN_TANAH?.[data.KELEMBAPAN_TANAH.length - 1]?.value ?? "0"} %</CardTitle>
+							<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">{data?.kelembapan_tanah?.[data.kelembapan_tanah.length - 1]?.value ?? "0"} %</CardTitle>
 						</CardHeader>
 						<CardFooter className="flex-col items-start gap-1 text-sm">
 							<div className="line-clamp-1 flex gap-2 font-medium">Terakhir diupdate:</div>
-							<div className="text-muted-foreground">{sensorNow?.KELEMBAPAN_TANAH?.createdAt ? formatTanggal(sensorNow?.KELEMBAPAN_TANAH?.createdAt) : data?.KELEMBAPAN_TANAH?.[data.KELEMBAPAN_TANAH.length - 1]?.createdAt ? formatTanggal(data?.KELEMBAPAN_TANAH?.[data.KELEMBAPAN_TANAH.length - 1]?.createdAt) : "-"}</div>
+							<div className="text-muted-foreground">{data?.kelembapan_tanah?.[data.kelembapan_tanah.length - 1]?.createdAt ? formatTanggal(data.kelembapan_tanah[data.kelembapan_tanah.length - 1].createdAt) : "-"}</div>
 						</CardFooter>
 					</Card>
 					<Card className="@container/card">
 						<CardHeader className="relative">
 							<CardDescription>Sensor Suhu Udara</CardDescription>
-							<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">{sensorNow?.SUHU_UDARA?.value ?? data?.SUHU_UDARA?.[data.SUHU_UDARA.length - 1]?.value ?? "0"} °C</CardTitle>
+							<CardTitle className="@[250px]/card:text-3xl text-2xl font-semibold tabular-nums">{data?.suhu_udara?.[data.suhu_udara.length - 1]?.value ?? "0"} °C</CardTitle>
 						</CardHeader>
 						<CardFooter className="flex-col items-start gap-1 text-sm">
 							<div className="line-clamp-1 flex gap-2 font-medium">Terakhir diupdate:</div>
-							<div className="text-muted-foreground">{sensorNow?.SUHU_UDARA?.createdAt ? formatTanggal(sensorNow?.SUHU_UDARA?.createdAt) : data?.SUHU_UDARA?.[data.SUHU_UDARA.length - 1]?.createdAt ? formatTanggal(data?.SUHU_UDARA?.[data.SUHU_UDARA.length - 1]?.createdAt) : "-"}</div>
+							<div className="text-muted-foreground">{data?.suhu_udara?.[data.suhu_udara.length - 1]?.createdAt ? formatTanggal(data.suhu_udara[data.suhu_udara.length - 1].createdAt) : "-"}</div>
 						</CardFooter>
 					</Card>
 				</div>
@@ -212,7 +192,7 @@ export default function Page() {
 				<div className="px-4">
 					<Card className="@container/card">
 						<CardHeader className="relative">
-							<CardTitle>List Data Suhu Kelembapan Tanah</CardTitle>
+							<CardTitle>List Data Kelembapan Tanah</CardTitle>
 							<CardDescription>
 								<span className="@[540px]/card:block">Total 50 data terakhir</span>
 							</CardDescription>
@@ -222,7 +202,7 @@ export default function Page() {
 								config={chartConfigKelembapanTanah}
 								className="aspect-auto h-[250px] w-full"
 							>
-								<AreaChart data={listDataSensor.KELEMBAPAN_TANAH}>
+								<AreaChart data={data.kelembapan_tanah}>
 									<defs>
 										<linearGradient
 											id="fillDesktop"
@@ -315,7 +295,7 @@ export default function Page() {
 								config={chartConfigSuhuUdata}
 								className="aspect-auto h-[250px] w-full"
 							>
-								<AreaChart data={listDataSensor.SUHU_UDARA}>
+								<AreaChart data={data.suhu_udara}>
 									<defs>
 										<linearGradient
 											id="fillDesktop"
@@ -413,7 +393,7 @@ export default function Page() {
 										</TableRow>
 									</TableHeader>
 									<TableBody>
-										{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA]
+										{[...data.kelembapan_tanah, ...data.suhu_udara]
 											.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime())
 											.map((item, index) => (
 												<TableRow key={index}>
@@ -428,7 +408,7 @@ export default function Page() {
 									<TableFooter>
 										<TableRow>
 											<TableCell colSpan={2}>Total Data</TableCell>
-											<TableCell className="text-right">{[...data.KELEMBAPAN_TANAH, ...data.SUHU_UDARA].length}</TableCell>
+											<TableCell className="text-right">{[...data.kelembapan_tanah, ...data.suhu_udara].length}</TableCell>
 										</TableRow>
 									</TableFooter>
 								</Table>
